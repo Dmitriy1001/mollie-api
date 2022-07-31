@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 
 	"example.com/m/config"
 	"example.com/m/controllers"
@@ -32,21 +33,27 @@ func main() {
 	// }
 	// fmt.Println(payment)
 
-	// /* get list */
-	// payments, err := controllers.GetAll(client, &mollie.ListPaymentOptions{})
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// for i, payment := range payments.Embedded.Payments {
-	// 	fmt.Println(strconv.Itoa(i)+".", payment)
-	// }
+	/* get list */
+	payments, err := controllers.GetAll(client, &mollie.ListPaymentOptions{})
+	if err != nil {
+		fmt.Println(err)
+	}
+	for i, payment := range payments.Embedded.Payments {
+		fmt.Println(
+			strconv.Itoa(i+1)+".",
+			payment.ID,
+			payment.Description,
+			payment.Amount,
+			payment.Status,
+		)
+	}
 
 	/* get one by id(string) */
 	payment, err = controllers.GetOne(client, "tr_DoVsKtFMZm", &mollie.PaymentOptions{})
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(payment.Description, payment.Amount)
+	fmt.Println(payment)
 
 	// /* update by id */
 	// payment, err := controllers.Update(
